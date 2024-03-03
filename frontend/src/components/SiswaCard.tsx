@@ -2,6 +2,7 @@ import { studentType } from "../api-client";
 import { useAppContext } from "../contexts/AppContext";
 import { useMutation } from "react-query";
 import * as apiClient from "../api-client";
+import { Link } from "react-router-dom";
 
 type Props = {
   tahunAjaran: string;
@@ -38,9 +39,12 @@ const SiswaCard = ({ tahunAjaran, kelas, siswa }: Props) => {
   };
   return (
     <div className="flex flex-1">
-      <div className=" w-full font-bold text-3xl py-2 flex justify-center">
+      <Link
+        to={`/tahunAjaran/${tahunAjaran}/kelas/${kelas}/siswa/${siswa._id}/absen`}
+        className=" w-full font-bold text-3xl py-2 flex justify-center"
+      >
         {siswa.nama}
-      </div>
+      </Link>
       <button
         className="bg-red-500 font-bold text-3xl px-2"
         onClick={handleDeleteStudent}

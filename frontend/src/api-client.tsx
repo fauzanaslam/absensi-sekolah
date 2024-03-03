@@ -32,10 +32,15 @@ export type studentType = {
   _id: string;
   nama: string;
   absenHarian: {
-    tanggal: Date;
+    tanggal: Date | string;
     presensi: boolean;
   }[];
   SPP: paymentType[];
+};
+
+export type absenHarianType = {
+  tanggal: Date;
+  presensi: boolean;
 };
 
 export type classType = {
@@ -81,6 +86,13 @@ export type DeleteSiswaRequestData = {
   tahunAjaranId: string | undefined;
   kelasId: string | undefined;
   siswaId: string | undefined;
+};
+export type AbsenSiswaType = {
+  nama: string;
+  absensi: boolean | null;
+};
+export type AbsenKelasType = {
+  absensiSiswa: AbsenSiswaType[];
 };
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
@@ -361,5 +373,58 @@ export const updatePresensi = async (studentId: string): Promise<void> => {
   } catch (error) {
     console.error("Error updating presensi:", error);
     throw error;
+  }
+};
+
+export const fetchSiswaDetails = async (
+  tahunAjaranId: string,
+  kelasId: string,
+  siswaId: string
+): Promise<studentType | null> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/tahun-ajaran/${tahunAjaranId}/kelas/${kelasId}/siswa/${siswaId}/absen`,
+      {
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error fetching class details for ${kelasId}`);
+    }
+
+    const data = await response.json();
+    console.log("DATA SISWA", data);
+
+    return data;
+  } catch (error) {
+    console.error("Error in fetchKelasDetails:", error);
+    return null;
+  }
+};
+export const fetchAbsensiKelas = async (
+  tahunAjaranId: string,
+  kelasId: string,
+  tanggal: string
+): Promise<AbsenKelasType | null> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/tahun-ajaran/${tahunAjaranId}/kelas/${kelasId}/absen?tanggal=${tanggal}`,
+      {
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error fetching class details for ${kelasId}`);
+    }
+
+    const data = await response.json();
+    console.log("DATA SISWA", data);
+
+    return data;
+  } catch (error) {
+    console.error("Error in fetchKelasDetails:", error);
+    return null;
   }
 };

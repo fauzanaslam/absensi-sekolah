@@ -45,13 +45,10 @@ const DetailKelas = () => {
 
   const handleUpdatePresensi = async (studentId: string) => {
     try {
-      // Highlight the student by adding to the state
       setHighlightedStudents((prev) => [...prev, studentId]);
 
-      // Update presensi
       await apiClient.updatePresensi(studentId);
 
-      // Remove the highlight after 1000ms (1 second)
       setTimeout(() => {
         setHighlightedStudents((prev) => prev.filter((id) => id !== studentId));
       }, 5000);
@@ -69,6 +66,12 @@ const DetailKelas = () => {
             KELAS: {kelas.kelas}
           </h2>
         ))}
+        <Link
+          to={`/tahun-ajaran/${tahunAjaranId}/kelas/${kelasId}/absen`}
+          className="flex bg-purple-800 text-white text-xl font-bold p-2 hover:bg-purple-500 rounded"
+        >
+          detail absen
+        </Link>
         <Link
           to={`/tahun-ajaran/${tahunAjaranId}/kelas/${kelasId}/tambah-siswa`}
           className="flex bg-blue-600 text-white text-xl font-bold p-2 hover:bg-blue-500 rounded"

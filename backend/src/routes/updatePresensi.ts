@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import TahunAjaran, { studentType } from "../models/tahunAjaran"; // Replace 'yourModel' with your actual model file
+import TahunAjaran, { classType, studentType } from "../models/tahunAjaran"; // Replace 'yourModel' with your actual model file
 
 const router = express.Router();
 

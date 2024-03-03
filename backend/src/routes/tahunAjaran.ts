@@ -4,8 +4,6 @@ import TahunAjaran, {
   classType,
   studentType,
 } from "../models/tahunAjaran";
-import verifyToken from "../middleware/auth";
-import { body } from "express-validator";
 
 const router = express.Router();
 
@@ -266,5 +264,101 @@ router.delete(
     }
   }
 );
+
+router.get(
+  "/:tahunAjaranId/kelas/:kelasId/siswa/:siswaId/absen",
+  async (req: Request, res: Response) => {
+    try {
+      const tahunAjaranId = req.params.tahunAjaranId;
+      const kelasId = req.params.kelasId;
+      const siswaId = req.params.siswaId;
+
+      const tahunAjaran = await TahunAjaran.findById(tahunAjaranId).lean();
+
+      if (tahunAjaran) {
+        const kelas: classType | undefined = tahunAjaran.kelas.find(
+          (kelas) => kelas._id.toString() === kelasId
+        );
+
+        if (kelas) {
+          const siswa: studentType | undefined = kelas.siswa.find(
+            (siswa) => siswa._id.toString() === siswaId
+          );
+
+          if (siswa) {
+            res.status(200).json({
+              nama: siswa.nama,
+              absenHarian: siswa.absenHarian,
+            });
+          } else {
+            res
+              .status(404)
+              .json({ message: `Siswa ${siswaId} tidak ditemukan.` });
+          }
+        } else {
+          res
+            .status(404)
+            .json({ message: `Kelas ${kelasId} tidak ditemukan.` });
+        }
+      } else {
+        res.status(404).json({ message: "Tahun ajaran tidak ditemukan." });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+);
+
+router.get("/:tahunAjaranId/kelas/:kelasId/absen", async (req, res) => {
+  try {
+    const tahunAjaranId = req.params.tahunAjaranId;
+    const kelasId = req.params.kelasId;
+    const tanggalParam = req.query.tanggal;
+
+    // Handle the case where 'tanggal' is undefined
+    if (!tanggalParam) {
+      return res
+        .status(400)
+        .json({ message: "Query parameter tanggal is required." });
+    }
+
+    const tanggal = new Date(tanggalParam as string);
+
+    // Temukan tahun ajaran
+    const tahunAjaran = await TahunAjaran.findById(tahunAjaranId).lean();
+
+    if (!tahunAjaran) {
+      return res.status(404).json({ message: "Tahun ajaran tidak ditemukan." });
+    }
+
+    // Temukan kelas
+    const kelas = tahunAjaran.kelas.find(
+      (kelas) => kelas._id.toString() === kelasId
+    );
+
+    if (!kelas) {
+      return res.status(404).json({ message: "Kelas tidak ditemukan." });
+    }
+
+    // Ambil data absensi seluruh siswa pada tanggal tertentu
+    const absensiSiswa = kelas.siswa.map((siswa) => {
+      const absensi = siswa.absenHarian.find(
+        (absen) => absen.tanggal.toDateString() === tanggal.toDateString()
+      );
+
+      return {
+        _id: siswa._id,
+        nama: siswa.nama,
+        absensi: absensi ? absensi.presensi : null,
+      };
+    });
+
+    res.status(200).json({ absensiSiswa });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 export default router;

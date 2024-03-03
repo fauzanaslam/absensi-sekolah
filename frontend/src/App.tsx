@@ -13,6 +13,8 @@ import DetailKelas from "./pages/DetailKelas";
 import TambahTahunAjaran from "./pages/TambahTahunAjaran";
 import TambahKelas from "./pages/TambahKelas";
 import TambahSiswa from "./pages/TambahSiswa";
+import DetailSiswa from "./pages/DetailSiswa";
+import DetailAbsen from "./pages/DetailAbsen";
 
 function App() {
   return (
@@ -28,6 +30,14 @@ function App() {
         <Route
           path="/tahunAjaran/:tahunAjaranId/kelas/:kelasId/siswa"
           element={<DetailKelas />}
+        />
+        <Route
+          path="/tahunAjaran/:tahunAjaranId/kelas/:kelasId/siswa/:siswaId/absen"
+          element={<DetailSiswa />}
+        />
+        <Route
+          path="/tahun-ajaran/:tahunAjaranId/kelas/:kelasId/absen"
+          element={<DetailAbsen />}
         />
         <Route path="/tambah-tahun-ajaran" element={<TambahTahunAjaran />} />
         <Route
