@@ -32,16 +32,16 @@ const TahunAjaranCard = ({ tahunAjaran }: Props) => {
     <div className="flex">
       <Link
         to={`/tahunAjaran/${tahunAjaran._id}`}
-        className="bg-gray-500 w-full font-bold text-3xl py-2 flex justify-center"
+        className="bg-gray-500 w-full font-bold text-3xl py-2 flex justify-center rounded-l-lg text-white h-52 hover:bg-gray-400 items-center shadow-xl"
       >
         {tahunAjaran.tahunAjaran}
       </Link>
 
       <button
-        className="bg-red-500 font-bold text-3xl px-2"
+        className="bg-red-500 font-bold  px-2 rounded-r-lg text-white hover:bg-red-400"
         onClick={handleDelete}
       >
-        X
+        hapus
       </button>
     </div>
   );

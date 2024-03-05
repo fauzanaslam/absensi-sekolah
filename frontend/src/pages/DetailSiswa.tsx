@@ -32,28 +32,36 @@ const DetailSiswa = () => {
 
   return (
     <div>
-      <SignOutButton />
-      <h2 className="text-3xl font-bold">NAMA SISWA: {siswaDetails.nama}</h2>
-      <table className="table-auto">
-        <thead>
-          <tr>
-            <th className="border px-4 py-2">Tanggal</th>
-            <th className="border px-4 py-2">Presensi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {siswaDetails.absenHarian.map((absen, index) => (
-            <tr key={index}>
-              <td className="border px-4 py-2">
-                {absen.tanggal.toLocaleString()}
-              </td>
-              <td className="border px-4 py-2">
-                {absen.presensi ? "Hadir" : "Tidak Hadir"}
-              </td>
+      <div className="bg-green-500 shadow-xl">
+        <SignOutButton />
+      </div>
+      <div className="container m-auto bg-yellow-400 rounded-full my-3 shadow-xl">
+        <h2 className="text-3xl font-bold text-white p-4">
+          Nama siswa: {siswaDetails.nama}
+        </h2>
+      </div>
+      <div className="flex container m-auto justify-center my-7">
+        <table className="table-auto w-full">
+          <thead>
+            <tr>
+              <th className="border px-4 py-2">Tanggal</th>
+              <th className="border px-4 py-2">Presensi</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {siswaDetails.absenHarian.map((absen, index) => (
+              <tr key={index}>
+                <td className="border px-4 py-2">
+                  {absen.tanggal.toLocaleString()}
+                </td>
+                <td className="border px-4 py-2">
+                  {absen.presensi ? "Hadir" : "Tidak Hadir"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

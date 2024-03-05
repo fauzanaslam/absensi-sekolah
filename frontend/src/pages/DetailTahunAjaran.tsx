@@ -26,20 +26,24 @@ const DetailTahunAjaran = () => {
   if (!isLoggedIn) return <SignIn />;
 
   return (
-    <div>
-      <SignOutButton />
-      <div className="flex justify-between pt-2 my-2">
-        <h2 className="text-3xl font-bold">
-          tahun ajaran: {tahunAjaran.tahunAjaran}
-        </h2>
-        <Link
-          to={`/tahun-ajaran/${tahunAjaranId}/tambah-kelas`}
-          className="flex bg-blue-600 text-white text-xl font-bold p-2 hover:bg-blue-500 rounded"
-        >
-          tambah kelas
-        </Link>
+    <div className="bg-gray-200 min-h-screen">
+      <div className="bg-green-500 shadow-xl">
+        <SignOutButton />
       </div>
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+      <div className="container m-auto bg-yellow-400 rounded-full my-3 shadow-xl">
+        <div className="flex justify-between p-4">
+          <h2 className="text-3xl font-bold text-white">
+            Tahun ajaran: {tahunAjaran.tahunAjaran}
+          </h2>
+          <Link
+            to={`/tahun-ajaran/${tahunAjaranId}/tambah-kelas`}
+            className="flex bg-yellow-700 text-white text-xl font-bold px-5 py-2 hover:bg-yellow-600 rounded-full shadow-xl"
+          >
+            tambah kelas
+          </Link>
+        </div>
+      </div>
+      <div className="container m-auto grid md:grid-cols-3 grid-cols-1 gap-4">
         {tahunAjaran.kelas.map((kelas) => (
           <KelasCard key={kelas._id} tahunAjaran={tahunAjaran} kelas={kelas} />
         ))}
