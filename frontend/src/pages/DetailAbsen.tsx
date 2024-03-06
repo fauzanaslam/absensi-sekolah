@@ -37,21 +37,48 @@ const DetailAbsen = () => {
 
   return (
     <div>
-      <SignOutButton />
-      <input
-        type="date"
-        value={selectedDate.toISOString().split("T")[0]} // Format tanggal untuk input type date
-        onChange={(e) => handleDateChange(new Date(e.target.value))}
-      />
-      <ul>
-        <ul>
-          {absensiSiswa.absensiSiswa.map((siswa, index) => (
-            <li key={index}>
-              {siswa.nama} - Presensi: {siswa.absensi ? "Hadir" : "Tidak Hadir"}
-            </li>
-          ))}
-        </ul>
-      </ul>
+      <div className="bg-green-500">
+        <SignOutButton />
+      </div>
+      <div className="container m-auto bg-yellow-400 rounded-full my-3 shadow-xl flex justify-center">
+        <input
+          className="bg-purple-800 text-3xl font-bold text-white px-4 py-2 rounded-full my-3"
+          type="date"
+          value={selectedDate.toISOString().split("T")[0]} // Format tanggal untuk input type date
+          onChange={(e) => handleDateChange(new Date(e.target.value))}
+        />
+      </div>
+      <div className="container m-auto">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                no
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Nama Siswa
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Presensi
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {absensiSiswa.absensiSiswa.map((siswa, index) => (
+              <tr
+                key={index}
+                className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+              >
+                <td className="px-6 py-4">{index + 1}</td>
+                <td className="px-6 py-4">{siswa.nama}</td>
+                <td className="px-6 py-4">
+                  {siswa.absensi ? "Hadir" : "Tidak Hadir"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
