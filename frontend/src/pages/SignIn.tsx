@@ -26,6 +26,7 @@ const SignIn = () => {
       showToast({ message: "berhasil masuk", type: "SUCCESS" });
       await queryClient.invalidateQueries("validateToken");
       navigate(location.state?.from?.pathname || "/home");
+      window.location.reload();
     },
     onError: (error: Error) => {
       showToast({ message: error.message, type: "ERROR" });

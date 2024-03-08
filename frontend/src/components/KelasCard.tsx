@@ -10,7 +10,9 @@ type Props = {
 };
 
 const KelasCard = ({ tahunAjaran, kelas }: Props) => {
-  const { showToast } = useAppContext();
+  const { showToast, userRole } = useAppContext();
+
+  const isUserRole = userRole !== "admin";
 
   const mutation = useMutation(apiClient.deleteKelas, {
     onSuccess: () => {
@@ -40,16 +42,20 @@ const KelasCard = ({ tahunAjaran, kelas }: Props) => {
     <div className="flex">
       <Link
         to={`/tahunAjaran/${tahunAjaran._id}/kelas/${kelas._id}/siswa`}
-        className="bg-gray-500 w-full font-bold text-3xl py-2 flex justify-center rounded-l-lg text-white h-52 hover:bg-gray-400 items-center shadow-xl"
+        className={`bg-gray-500 w-full font-bold text-3xl py-2 flex justify-center text-white h-52 hover:bg-gray-400 items-center shadow-xl ${
+          isUserRole ? "rounded-lg" : "rounded-l-lg"
+        }`}
       >
         {kelas.kelas}
       </Link>
-      <button
-        className="bg-red-500 font-bold px-2 rounded-r-lg text-white hover:bg-red-400"
-        onClick={handleDeleteClass}
-      >
-        hapus
-      </button>
+      {isUserRole ? null : (
+        <button
+          className="bg-red-500 font-bold px-2 rounded-r-lg text-white hover:bg-red-400"
+          onClick={handleDeleteClass}
+        >
+          hapus
+        </button>
+      )}
     </div>
   );
 };

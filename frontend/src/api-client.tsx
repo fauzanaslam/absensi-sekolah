@@ -95,6 +95,14 @@ export type AbsenKelasType = {
   absensiSiswa: AbsenSiswaType[];
 };
 
+export type UserType = {
+  _id: string;
+  email: string;
+  password: string;
+  username: string;
+  role: string;
+};
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 export const register = async (formData: RegisterFormData) => {
@@ -427,4 +435,14 @@ export const fetchAbsensiKelas = async (
     console.error("Error in fetchKelasDetails:", error);
     return null;
   }
+};
+
+export const fetchCurrentUser = async (): Promise<UserType> => {
+  const response = await fetch(`${API_BASE_URL}/api/users/me`, {
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Error fetching user");
+  }
+  return response.json();
 };

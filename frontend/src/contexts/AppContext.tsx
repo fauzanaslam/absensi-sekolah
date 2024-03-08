@@ -11,6 +11,7 @@ type ToastMessage = {
 type AppContext = {
   showToast: (toastMessage: ToastMessage) => void;
   isLoggedIn: boolean;
+  userRole?: string;
 };
 
 const AppContext = React.createContext<AppContext | undefined>(undefined);
@@ -26,6 +27,9 @@ export const AppContextProvider = ({
   const { isError } = useQuery("validateToken", apiClient.validateToken, {
     retry: false,
   });
+  const { data } = useQuery("fetchCurrentUser", apiClient.fetchCurrentUser, {
+    retry: false,
+  });
 
   return (
     // mendeklarasikan value apa saja yang bisa diakses di file lain untuk di modifikasi
@@ -35,6 +39,7 @@ export const AppContextProvider = ({
           setToast(toastMessage);
         },
         isLoggedIn: !isError,
+        userRole: data?.role,
       }}
     >
       {toast && (
