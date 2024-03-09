@@ -5,10 +5,12 @@ import SignOutButton from "../components/SignOutButton";
 import { useAppContext } from "../contexts/AppContext";
 import SignIn from "./SignIn";
 import BreadCrumb from "../components/BreadCrumb";
+import { useState } from "react";
 
 const DetailKelas = () => {
   const { tahunAjaranId, kelasId } = useParams();
   const { isLoggedIn, userRole } = useAppContext();
+  const [isNameSortedAsc, setIsNameSortedAsc] = useState(true);
 
   const isUserRole = userRole !== "admin";
 
@@ -41,6 +43,21 @@ const DetailKelas = () => {
       console.error("Error updating presensi:", error);
     }
   };
+
+  const handleSortByName = () => {
+    setIsNameSortedAsc((prev) => !prev);
+  };
+
+  const sortedSiswa = [...kelasDetails.siswa].sort((a, b) => {
+    const nameA = a.nama.toUpperCase();
+    const nameB = b.nama.toUpperCase();
+
+    if (isNameSortedAsc) {
+      return nameA.localeCompare(nameB);
+    } else {
+      return nameB.localeCompare(nameA);
+    }
+  });
 
   return (
     <div className="bg-gray-200 min-h-screen">
@@ -87,7 +104,13 @@ const DetailKelas = () => {
                 no
               </th>
               <th scope="col" className="px-6 py-3">
-                Nama Siswa
+                <button
+                  className="focus:outline-none"
+                  onClick={handleSortByName}
+                >
+                  Nama Siswa
+                  {isNameSortedAsc ? " ▲" : " ▼"}
+                </button>
               </th>
               {isUserRole ? null : (
                 <th scope="col" className="px-6 py-3">
@@ -97,7 +120,7 @@ const DetailKelas = () => {
             </tr>
           </thead>
           <tbody>
-            {kelasDetails.siswa.map((User, index) => (
+            {sortedSiswa.map((User, index) => (
               <tr
                 key={index}
                 className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"

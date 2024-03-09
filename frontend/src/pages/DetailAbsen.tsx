@@ -3,6 +3,7 @@ import SignOutButton from "../components/SignOutButton";
 import * as apiClient from "../api-client";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
+import BreadCrumb from "../components/BreadCrumb";
 
 const DetailAbsen = () => {
   const { tahunAjaranId, kelasId } = useParams();
@@ -39,6 +40,22 @@ const DetailAbsen = () => {
     <div>
       <div className="bg-green-500">
         <SignOutButton />
+      </div>
+      <div className="container m-auto">
+        <BreadCrumb
+          items={[
+            { label: "Tahun ajaran", to: "/home" },
+            { label: "Kelas", to: `/tahunAjaran/${tahunAjaranId}` },
+            {
+              label: "siswa",
+              to: `/tahunAjaran/${tahunAjaranId}/kelas/${kelasId}/siswa`,
+            },
+            {
+              label: "absen",
+              to: `/tahun-ajaran/${tahunAjaranId}/kelas/${kelasId}/siswa`,
+            },
+          ]}
+        />
       </div>
       <div className="container m-auto bg-yellow-400 rounded-full my-3 shadow-xl flex justify-center">
         <input
