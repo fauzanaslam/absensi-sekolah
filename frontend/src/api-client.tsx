@@ -58,6 +58,21 @@ export type academicYearType = {
 export type addAcademicYearType = {
   tahunAjaran: string;
 };
+export type updateAcademicYearType = {
+  tahunAjaranId: string | undefined;
+  tahunAjaran: string;
+};
+export type updateKelasType = {
+  tahunAjaranId: string | undefined;
+  kelasId: string | undefined;
+  kelas: string[];
+};
+export type updateSiswaType = {
+  tahunAjaranId: string | undefined;
+  kelasId: string | undefined;
+  siswaId: string | undefined;
+  nama: string;
+};
 
 export type NewClassType = {
   kelas: string;
@@ -191,6 +206,23 @@ export const fetchTahunAjaranById = async (
   return response.json();
 };
 
+export const fetchKelas = async (tahunAjaranId: string): Promise<classType> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/tahun-ajaran/${tahunAjaranId}/kelas`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error fetching kelas: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Error: ${error}`);
+  }
+};
+
 export const fetchKelasDetails = async (
   tahunAjaranId: string,
   kelasId: string
@@ -249,7 +281,34 @@ export const tambahTahunAjaran = async (
   }
 };
 
-// Update your API function
+export const editTahunAjaran = async (
+  updatedData: updateAcademicYearType
+): Promise<updateAcademicYearType | null> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/tahun-ajaran/${updatedData.tahunAjaranId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error editing tahun ajaran: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error editing tahun ajaran:", error);
+    throw error;
+  }
+};
+
 export const tambahKelas = async (
   requestData: TambahKelasRequestData
 ): Promise<void> => {
@@ -278,6 +337,34 @@ export const tambahKelas = async (
   }
 };
 
+export const editKelas = async (
+  updatedData: updateKelasType
+): Promise<updateKelasType | null> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/tahun-ajaran/${updatedData.tahunAjaranId}/kelas/${updatedData.kelasId}/edit-kelas`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error editing kelas: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error editing kelas:", error);
+    throw error;
+  }
+};
+
 export const tambahSiswa = async (
   requestData: TambahSiswaRequestData
 ): Promise<void> => {
@@ -300,6 +387,34 @@ export const tambahSiswa = async (
     }
   } catch (error) {
     console.error("Error in tambahSiswa:", error);
+  }
+};
+
+export const editSiswa = async (
+  updatedData: updateSiswaType
+): Promise<updateSiswaType | null> => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/tahun-ajaran/${updatedData.tahunAjaranId}/kelas/${updatedData.kelasId}/siswa/${updatedData.siswaId}/edit-siswa`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+        credentials: "include",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error editing kelas: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error editing kelas:", error);
+    throw error;
   }
 };
 

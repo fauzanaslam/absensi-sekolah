@@ -3,6 +3,8 @@ import { academicYearType } from "../api-client";
 import { useMutation } from "react-query";
 import * as apiClient from "../api-client";
 import { useAppContext } from "../contexts/AppContext";
+import tahunAjaranPict from "../assets/pictures/tahunAjaran3.png";
+import { TrashIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
 
 type Props = {
   tahunAjaran: academicYearType;
@@ -31,22 +33,37 @@ const TahunAjaranCard = ({ tahunAjaran }: Props) => {
   };
 
   return (
-    <div className="flex">
+    <div className="">
       <Link
         to={`/tahunAjaran/${tahunAjaran._id}`}
-        className={`bg-gray-500 w-full font-bold text-3xl py-2 flex justify-center text-white h-52 hover:bg-gray-400 items-center shadow-xl ${
-          isUserRole ? "rounded-lg" : "rounded-l-lg"
+        className={`bg-green-500 w-full font-bold md:text-xl py-2 grid justify-center text-white h-36 hover:bg-green-400 items-center shadow-xl ${
+          isUserRole ? "rounded-lg" : "rounded-t-lg"
         }`}
       >
+        <img
+          src={tahunAjaranPict}
+          alt="tes"
+          width={"75px"}
+          className="mx-auto"
+        />
         {tahunAjaran.tahunAjaran}
       </Link>
       {isUserRole ? null : (
-        <button
-          className="bg-red-500 font-bold  px-2 rounded-r-lg text-white hover:bg-red-400"
-          onClick={handleDelete}
-        >
-          hapus
-        </button>
+        <div className="flex">
+          <button
+            className="bg-red-500 font-bold text-white hover:bg-red-400 flex-1 rounded-bl-lg"
+            onClick={handleDelete}
+          >
+            <TrashIcon className="h-6 w-4 m-auto" />
+          </button>
+          <Link
+            to={`/tahunAjaran/${tahunAjaran._id}/edit-tahun-ajaran`}
+            className="bg-blue-500 font-bold rounded-br-lg text-white hover:bg-blue-400 flex-1"
+            onClick={window.location.reload}
+          >
+            <PencilSquareIcon className="h-full w-4 m-auto" />
+          </Link>
+        </div>
       )}
     </div>
   );

@@ -361,4 +361,101 @@ router.get("/:tahunAjaranId/kelas/:kelasId/absen", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const tahunAjaran = await TahunAjaran.findById(id);
+
+    if (!tahunAjaran) {
+      return res.status(404).json({ message: "Tahun ajaran not found" });
+    }
+
+    tahunAjaran.tahunAjaran = req.body.tahunAjaran;
+    await tahunAjaran.save();
+
+    res
+      .status(200)
+      .json({ message: "Tahun ajaran updated successfully", tahunAjaran });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.put("/:tahunAjaranId/kelas/:kelasId/edit-kelas", async (req, res) => {
+  const tahunAjaranId = req.params.tahunAjaranId;
+  const kelasId = req.params.kelasId;
+
+  try {
+    const tahunAjaran = await TahunAjaran.findById(tahunAjaranId);
+
+    if (!tahunAjaran) {
+      return res.status(404).json({ message: "Tahun ajaran tidak ditemukan." });
+    }
+
+    const kelas = tahunAjaran.kelas.find(
+      (kelas) => kelas._id.toString() === kelasId
+    );
+
+    if (!kelas) {
+      return res.status(404).json({ message: "Kelas tidak ditemukan." });
+    }
+
+    kelas.kelas = req.body.kelas;
+    await tahunAjaran.save();
+
+    res.status(200).json({ message: "kelas updated successfully", kelas });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.put(
+  "/:tahunAjaranId/kelas/:kelasId/siswa/:siswaId/edit-siswa",
+  async (req: Request, res: Response) => {
+    try {
+      const tahunAjaranId = req.params.tahunAjaranId;
+      const kelasId = req.params.kelasId;
+      const siswaId = req.params.siswaId;
+
+      const tahunAjaran = await TahunAjaran.findById(tahunAjaranId);
+
+      if (tahunAjaran) {
+        const kelas: classType | undefined = tahunAjaran.kelas.find(
+          (kelas) => kelas._id.toString() === kelasId
+        );
+
+        if (kelas) {
+          const siswa: studentType | undefined = kelas.siswa.find(
+            (siswa) => siswa._id.toString() === siswaId
+          );
+
+          if (siswa) {
+            siswa.nama = req.body.nama;
+            await tahunAjaran.save();
+            res
+              .status(200)
+              .json({ message: "siswa updated successfully", siswa });
+          } else {
+            res
+              .status(404)
+              .json({ message: `Siswa ${siswaId} tidak ditemukan.` });
+          }
+        } else {
+          res
+            .status(404)
+            .json({ message: `Kelas ${kelasId} tidak ditemukan.` });
+        }
+      } else {
+        res.status(404).json({ message: "Tahun ajaran tidak ditemukan." });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+);
+
 export default router;

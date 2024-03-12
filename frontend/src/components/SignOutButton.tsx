@@ -23,7 +23,7 @@ const SignOutButton = () => {
   };
 
   return (
-    <div className="container m-auto bg-green-500 flex justify-between py-3 items-center">
+    <div className="container m-auto bg-green-500 flex justify-between py-1 items-center">
       <div>
         <Link to={"/home"} className="flex items-center">
           <img src={icon1} alt="tes" width={"30px"} />
@@ -35,7 +35,7 @@ const SignOutButton = () => {
       <div>
         <button
           onClick={handleClick}
-          className="text-white px-3 font-bold hover:underline text-2xl"
+          className="text-white px-3 font-bold hover:underline text-xl"
         >
           Keluar
         </button>

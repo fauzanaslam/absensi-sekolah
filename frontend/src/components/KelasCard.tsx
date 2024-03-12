@@ -3,6 +3,8 @@ import { academicYearType, classType } from "../api-client";
 import { useAppContext } from "../contexts/AppContext";
 import { useMutation } from "react-query";
 import * as apiClient from "../api-client";
+import kelasPict from "../assets/pictures/kelas.png";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 
 type Props = {
   tahunAjaran: academicYearType;
@@ -39,22 +41,32 @@ const KelasCard = ({ tahunAjaran, kelas }: Props) => {
   };
 
   return (
-    <div className="flex">
+    <div className="">
       <Link
         to={`/tahunAjaran/${tahunAjaran._id}/kelas/${kelas._id}/siswa`}
-        className={`bg-gray-500 w-full font-bold text-3xl py-2 flex justify-center text-white h-52 hover:bg-gray-400 items-center shadow-xl ${
-          isUserRole ? "rounded-lg" : "rounded-l-lg"
+        className={`bg-green-500 w-full font-bold text-xl py-2 grid justify-center text-white h-36 hover:bg-green-400 items-center shadow-xl ${
+          isUserRole ? "rounded-lg" : "rounded-t-lg"
         }`}
       >
+        <img src={kelasPict} alt="tes" width={"75px"} className="mx-auto" />
         {kelas.kelas}
       </Link>
       {isUserRole ? null : (
-        <button
-          className="bg-red-500 font-bold px-2 rounded-r-lg text-white hover:bg-red-400"
-          onClick={handleDeleteClass}
-        >
-          hapus
-        </button>
+        <div className="flex">
+          <button
+            className="bg-red-500 font-bold px-2 rounded-bl-lg text-white hover:bg-red-400 flex-1"
+            onClick={handleDeleteClass}
+          >
+            <TrashIcon className="w-4 h-6 m-auto" />
+          </button>
+          <Link
+            to={`/tahunAjaran/${tahunAjaran._id}/kelas/${kelas._id}/edit-kelas`}
+            className="bg-blue-500 font-bold px-2 rounded-br-lg text-white hover:bg-blue-400 flex-1"
+            onClick={window.location.reload}
+          >
+            <PencilSquareIcon className="h-full w-4 m-auto" />
+          </Link>
+        </div>
       )}
     </div>
   );

@@ -15,6 +15,9 @@ import TambahKelas from "./pages/TambahKelas";
 import TambahSiswa from "./pages/TambahSiswa";
 import DetailSiswa from "./pages/DetailSiswa";
 import DetailAbsen from "./pages/DetailAbsen";
+import EditTahunAjaran from "./pages/EditTahunAjaran";
+import EditKelas from "./pages/EditKelas";
+import EditSiswa from "./pages/EditSiswa";
 
 function App() {
   return (
@@ -28,12 +31,24 @@ function App() {
           element={<DetailTahunAjaran />}
         />
         <Route
+          path="/tahunAjaran/:tahunAjaranId/edit-tahun-ajaran"
+          element={<EditTahunAjaran />}
+        />
+        <Route
           path="/tahunAjaran/:tahunAjaranId/kelas/:kelasId/siswa"
           element={<DetailKelas />}
         />
         <Route
+          path="/tahunAjaran/:tahunAjaranId/kelas/:kelasId/edit-kelas"
+          element={<EditKelas />}
+        />
+        <Route
           path="/tahunAjaran/:tahunAjaranId/kelas/:kelasId/siswa/:siswaId/absen"
           element={<DetailSiswa />}
+        />
+        <Route
+          path="/tahunAjaran/:tahunAjaranId/kelas/:kelasId/siswa/:siswaId/edit-siswa"
+          element={<EditSiswa />}
         />
         <Route
           path="/tahun-ajaran/:tahunAjaranId/kelas/:kelasId/absen"
